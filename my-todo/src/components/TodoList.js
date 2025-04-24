@@ -9,12 +9,13 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import { v4 as uuidv4 } from "uuid";
 // Todo component
 import Todo from "./Todo";
 
-const todos = [
+const initialTodos = [
   {
     id: uuidv4(),
     title: "Read a book",
@@ -36,7 +37,18 @@ const todos = [
 ];
 
 export default function TodoList() {
-  const [filter, setFilter] = React.useState("ALL");
+  const [filter, setFilter] = useState("ALL");
+  const [todos, setTodos] = useState(initialTodos);
+  const [newTodo, setNewTodo] = useState("");
+
+  const handleAddTodo = () => {
+    setTodos([
+      ...todos,
+      { id: uuidv4(), title: newTodo, description: "", completed: false },
+    ]);
+    setNewTodo("");
+  };
+
   const todosJsx = todos.map((todo) => <Todo key={todo.id} todo={todo} />);
 
   const handleFilterChange = (event, newFilter) => {
@@ -120,7 +132,9 @@ export default function TodoList() {
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={9}>
                 <TextField
+                  onChange={(e) => setNewTodo(e.target.value)}
                   label="Add Todo"
+                  value={newTodo}
                   variant="outlined"
                   fullWidth
                   size="small"
@@ -133,6 +147,8 @@ export default function TodoList() {
               </Grid>
               <Grid item xs={3}>
                 <Button
+                  onClick={handleAddTodo}
+                  value={newTodo}
                   variant="contained"
                   color="primary"
                   fullWidth
