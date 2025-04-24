@@ -10,35 +10,16 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
+import { useTodos } from "../contexts/todosContext";
 import Button from "@mui/material/Button";
 import { v4 as uuidv4 } from "uuid";
 // Todo component
 import Todo from "./Todo";
 
-const initialTodos = [
-  {
-    id: uuidv4(),
-    title: "Read a book",
-    description: "Read a book about React",
-    completed: false,
-  },
-  {
-    id: uuidv4(),
-    title: "Buy a new phone",
-    description: "Buy a new phone with 128GB of storage",
-    completed: true,
-  },
-  {
-    id: uuidv4(),
-    title: "Go to the gym",
-    description: "Go to the gym and lift weights",
-    completed: false,
-  },
-];
-
 export default function TodoList() {
+  const { todos, setTodos } = useTodos();
+
   const [filter, setFilter] = useState("ALL");
-  const [todos, setTodos] = useState(initialTodos);
   const [newTodo, setNewTodo] = useState("");
 
   const handleAddTodo = () => {
@@ -49,17 +30,7 @@ export default function TodoList() {
     setNewTodo("");
   };
 
-  const handleComplete = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
-  const todosJsx = todos.map((todo) => (
-    <Todo key={todo.id} todo={todo} handleComplete={handleComplete} />
-  ));
+  const todosJsx = todos.map((todo) => <Todo key={todo.id} todo={todo} />);
 
   const handleFilterChange = (event, newFilter) => {
     if (newFilter !== null) {

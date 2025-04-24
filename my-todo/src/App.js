@@ -3,7 +3,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import TodoList from "./components/TodoList";
-
+import { TodosProvider } from "./contexts/todosContext";
 // Create a theme
 const theme = createTheme({
   palette: {
@@ -38,18 +38,20 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-          bgcolor: "background.default",
-          p: 2,
-        }}
-      >
-        <TodoList />
-      </Box>
+      <TodosProvider>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+            bgcolor: "background.default",
+            p: 2,
+          }}
+        >
+          <TodoList />
+        </Box>
+      </TodosProvider>
     </ThemeProvider>
   );
 }

@@ -5,11 +5,18 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import Button from "@mui/material/Button";
+import { useTodos } from "../contexts/todosContext";
 import Divider from "@mui/material/Divider";
 
-export default function Todo({ todo, handleComplete }) {
+export default function Todo({ todo }) {
+  const { todos, setTodos } = useTodos();
+
   function handleTodoComplete() {
-    handleComplete(todo.id);
+    setTodos(
+      todos.map((t) =>
+        t.id === todo.id ? { ...t, completed: !t.completed } : t
+      )
+    );
   }
 
   return (
