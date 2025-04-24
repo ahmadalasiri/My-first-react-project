@@ -5,42 +5,33 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
-import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
-import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
-import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
+import Box from "@mui/material/Box";
 
 export default function TodoList() {
   return (
-    <Container maxWidth="sm">
-      <Card sx={{ minWidth: 275 }}>
+    <Container maxWidth="sm" sx={{ textAlign: "center" }}>
+      <Card>
         <CardContent>
-          <Typography
-            gutterBottom
-            sx={{ color: "text.secondary", fontSize: 14 }}
-          >
-            My Todo List
-          </Typography>
+          <Typography gutterBottom>My Todo List</Typography>
           {/* Filter buttons */}
-          <ToggleButtonGroup
-            // value={alignment}
-            exclusive
-            // onChange={handleAlignment}
-            aria-label="text alignment"
-          >
-            <ToggleButton value="left" aria-label="left aligned">
-              <FormatAlignLeftIcon />
-            </ToggleButton>
-            <ToggleButton value="center" aria-label="centered">
-              <FormatAlignCenterIcon />
-            </ToggleButton>
-            <ToggleButton value="right" aria-label="right aligned">
-              <FormatAlignRightIcon />
-            </ToggleButton>
-            <ToggleButton value="justify" aria-label="justified" disabled>
-              <FormatAlignJustifyIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
+          <Box sx={{ mt: 2 }}>
+            <ToggleButtonGroup
+              // value={alignment}
+              exclusive
+              // onChange={handleAlignment}
+              aria-label="text alignment"
+            >
+              <ToggleButton value="left" aria-label="left aligned">
+                All
+              </ToggleButton>
+              <ToggleButton value="center" aria-label="centered">
+                Active
+              </ToggleButton>
+              <ToggleButton value="right" aria-label="right aligned">
+                Completed
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
         </CardContent>
       </Card>
     </Container>
