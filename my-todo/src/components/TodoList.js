@@ -36,43 +36,118 @@ const todos = [
 ];
 
 export default function TodoList() {
+  const [filter, setFilter] = React.useState("ALL");
   const todosJsx = todos.map((todo) => <Todo key={todo.id} todo={todo} />);
+
+  const handleFilterChange = (event, newFilter) => {
+    if (newFilter !== null) {
+      setFilter(newFilter);
+    }
+  };
+
   return (
-    <Container maxWidth="sm" sx={{ textAlign: "center" }}>
-      <Card>
-        <CardContent>
-          <Typography gutterBottom>My Todo List</Typography>
-          <Divider />
+    <Container
+      maxWidth="sm"
+      sx={{
+        textAlign: "center",
+        py: 4,
+        height: "100%",
+      }}
+    >
+      <Card
+        sx={{
+          borderRadius: 2,
+          boxShadow: 3,
+          overflow: "visible",
+        }}
+      >
+        <CardContent sx={{ p: 3 }}>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{
+              fontWeight: 500,
+              mb: 2,
+            }}
+          >
+            My Todo List
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
+
           {/* Filter buttons */}
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ mb: 3 }}>
             <ToggleButtonGroup
-              // value={alignment}
+              value={filter}
               exclusive
-              // onChange={handleAlignment}
-              aria-label="text alignment"
+              onChange={handleFilterChange}
+              aria-label="todo filter"
+              size="small"
+              sx={{
+                width: "70%",
+                "& .MuiToggleButton-root": {
+                  border: "1px solid rgba(0, 0, 0, 0.12)",
+                  textTransform: "uppercase",
+                  fontWeight: 500,
+                  fontSize: "0.85rem",
+                },
+              }}
             >
-              <ToggleButton value="left" aria-label="left aligned">
-                All
+              <ToggleButton value="ALL" aria-label="all todos" sx={{ flex: 1 }}>
+                ALL
               </ToggleButton>
-              <ToggleButton value="center" aria-label="centered">
-                Active
+              <ToggleButton
+                value="ACTIVE"
+                aria-label="active todos"
+                sx={{ flex: 1 }}
+              >
+                ACTIVE
               </ToggleButton>
-              <ToggleButton value="right" aria-label="right aligned">
-                Completed
+              <ToggleButton
+                value="COMPLETED"
+                aria-label="completed todos"
+                sx={{ flex: 1 }}
+              >
+                COMPLETED
               </ToggleButton>
             </ToggleButtonGroup>
           </Box>
-          {todosJsx}
-          <Grid container spacing={2}>
-            <Grid size={10}>
-              <TextField label="Add Todo" />
+
+          {/* Todo list */}
+          <Box sx={{ mb: 3 }}>{todosJsx}</Box>
+
+          {/* Add todo form */}
+          <Box sx={{ mt: 3, px: 1 }}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={9}>
+                <TextField
+                  label="Add Todo"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 1,
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{
+                    borderRadius: 1,
+                    py: 1,
+                    textTransform: "uppercase",
+                    fontWeight: "bold",
+                  }}
+                >
+                  ADD
+                </Button>
+              </Grid>
             </Grid>
-            <Grid size={2}>
-              <Button variant="contained" color="primary">
-                Add
-              </Button>
-            </Grid>
-          </Grid>
+          </Box>
         </CardContent>
       </Card>
     </Container>
