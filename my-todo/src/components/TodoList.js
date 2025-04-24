@@ -49,7 +49,17 @@ export default function TodoList() {
     setNewTodo("");
   };
 
-  const todosJsx = todos.map((todo) => <Todo key={todo.id} todo={todo} />);
+  const handleComplete = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  const todosJsx = todos.map((todo) => (
+    <Todo key={todo.id} todo={todo} handleComplete={handleComplete} />
+  ));
 
   const handleFilterChange = (event, newFilter) => {
     if (newFilter !== null) {

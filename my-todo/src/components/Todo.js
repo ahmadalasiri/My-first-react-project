@@ -7,7 +7,11 @@ import CheckIcon from "@mui/icons-material/Check";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 
-export default function Todo({ todo }) {
+export default function Todo({ todo, handleComplete }) {
+  function handleTodoComplete() {
+    handleComplete(todo.id);
+  }
+
   return (
     <Box sx={{ mb: 2 }}>
       <Box
@@ -41,6 +45,7 @@ export default function Todo({ todo }) {
 
         <Box sx={{ display: "flex", gap: 0.5 }}>
           <Button
+            onClick={handleTodoComplete}
             variant="contained"
             color="success"
             size="small"
