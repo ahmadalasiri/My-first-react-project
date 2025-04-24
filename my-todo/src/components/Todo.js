@@ -6,11 +6,17 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import Button from "@mui/material/Button";
 import { useTodos } from "../contexts/todosContext";
+import { useState } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
 import Divider from "@mui/material/Divider";
 
 export default function Todo({ todo }) {
   const { todos, setTodos } = useTodos();
-
+  const [open, setOpen] = useState(false);
   function handleTodoComplete() {
     setTodos(
       todos.map((t) =>
@@ -78,9 +84,38 @@ export default function Todo({ todo }) {
             <EditIcon fontSize="small" />
           </Button>
 
+          {/* Delete dialog  */}
+          <Dialog
+            open={open}
+            onClose={() => setOpen(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">Delete Todo</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure you want to delete this todo?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setOpen(false)}>Cancel</Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  setTodos(todos.filter((t) => t.id !== todo.id));
+                  setOpen(false);
+                }}
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+
           <Button
             variant="contained"
             color="error"
+            onClick={() => setOpen(true)}
             size="small"
             sx={{
               minWidth: 0,
