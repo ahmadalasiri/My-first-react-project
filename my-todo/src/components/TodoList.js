@@ -88,6 +88,9 @@ export default function TodoList() {
     setTodos(newTodos);
     localStorage.setItem("todos", JSON.stringify(newTodos));
     setOpenEditDialog(false);
+    setMessage("Todo updated successfully");
+    setSeverity("success");
+    setOpen(true);
   }
 
   function handleOpenEditDialog(todo) {
@@ -145,6 +148,9 @@ export default function TodoList() {
               setTodos(newTodos);
               localStorage.setItem("todos", JSON.stringify(newTodos));
               setOpenDeleteDialog(false);
+              setMessage("Todo deleted successfully");
+              setSeverity("error");
+              setOpen(true);
             }}
             sx={{ fontWeight: "bold", borderRadius: 1 }}
           >

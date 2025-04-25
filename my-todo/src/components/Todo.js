@@ -7,16 +7,21 @@ import CheckIcon from "@mui/icons-material/Check";
 import Button from "@mui/material/Button";
 import { useTodos } from "../contexts/todosContext";
 import Divider from "@mui/material/Divider";
-
+import { useToast } from "../contexts/toastContext";
 export default function Todo({ todo, showDeleteDialog, handleOpenEditDialog }) {
   const { todos, setTodos } = useTodos();
-
+  const { setOpen, setMessage, setSeverity } = useToast();
   function handleTodoComplete() {
     const newTodos = todos.map((t) =>
       t.id === todo.id ? { ...t, completed: !t.completed } : t
     );
     setTodos(newTodos);
     localStorage.setItem("todos", JSON.stringify(newTodos));
+    if (!todo.completed) {
+      setMessage("Todo completed successfully");
+      setSeverity("success");
+      setOpen(true);
+    }
   }
 
   return (
