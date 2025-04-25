@@ -25,25 +25,25 @@ export default function Todo({ todo }) {
   const [editDetails, setEditDetails] = useState(todo.description || "");
 
   function handleTodoComplete() {
-    setTodos(
-      todos.map((t) =>
-        t.id === todo.id ? { ...t, completed: !t.completed } : t
-      )
+    const newTodos = todos.map((t) =>
+      t.id === todo.id ? { ...t, completed: !t.completed } : t
     );
+    setTodos(newTodos);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
   }
 
   function handleSaveEdit() {
-    setTodos(
-      todos.map((t) =>
-        t.id === todo.id
-          ? {
-              ...t,
-              title: editTitle,
-              description: editDetails,
-            }
-          : t
-      )
+    const newTodos = todos.map((t) =>
+      t.id === todo.id
+        ? {
+            ...t,
+            title: editTitle,
+            description: editDetails,
+          }
+        : t
     );
+    setTodos(newTodos);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
     setOpenEditDialog(false);
   }
 
@@ -231,7 +231,9 @@ export default function Todo({ todo }) {
                 variant="contained"
                 color="error"
                 onClick={() => {
-                  setTodos(todos.filter((t) => t.id !== todo.id));
+                  const newTodos = todos.filter((t) => t.id !== todo.id);
+                  setTodos(newTodos);
+                  localStorage.setItem("todos", JSON.stringify(newTodos));
                   setOpenDeleteDialog(false);
                 }}
                 sx={{ fontWeight: "bold", borderRadius: 1 }}

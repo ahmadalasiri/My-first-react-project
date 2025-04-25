@@ -1,6 +1,7 @@
 import * as React from "react";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
+import { useEffect } from "react";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -23,10 +24,12 @@ export default function TodoList() {
   const [newTodo, setNewTodo] = useState("");
 
   const handleAddTodo = () => {
-    setTodos([
+    const newTodos = [
       ...todos,
       { id: uuidv4(), title: newTodo, description: "", completed: false },
-    ]);
+    ];
+    setTodos(newTodos);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
     setNewTodo("");
   };
 
@@ -37,6 +40,10 @@ export default function TodoList() {
       setFilter(newFilter);
     }
   };
+  useEffect(() => {
+    const initialTodos = JSON.parse(localStorage.getItem("todos")) || [];
+    setTodos(initialTodos);
+  }, []);
 
   return (
     <Container
@@ -129,7 +136,6 @@ export default function TodoList() {
               <Grid item xs={3}>
                 <Button
                   onClick={handleAddTodo}
-                  value={newTodo}
                   variant="contained"
                   color="primary"
                   fullWidth

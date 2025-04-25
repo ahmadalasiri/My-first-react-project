@@ -24,6 +24,7 @@ const initialTodos = [
 ];
 
 export const TodosProvider = ({ children }) => {
+  // const initialTodos = JSON.parse(localStorage.getItem("todos")) || [];
   const [todos, setTodos] = useState(initialTodos);
 
   return (
