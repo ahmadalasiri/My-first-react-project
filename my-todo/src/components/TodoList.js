@@ -1,7 +1,7 @@
 import * as React from "react";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -40,12 +40,14 @@ export default function TodoList() {
   };
 
   // Filter todos based on current filter
-  const filteredTodos = todos.filter((todo) => {
-    if (filter === "ALL") return true;
-    if (filter === "ACTIVE") return !todo.completed;
-    if (filter === "COMPLETED") return todo.completed;
-    return true;
-  });
+  const filteredTodos = useMemo(() => {
+    return todos.filter((todo) => {
+      if (filter === "ALL") return true;
+      if (filter === "ACTIVE") return !todo.completed;
+      if (filter === "COMPLETED") return todo.completed;
+      return true;
+    });
+  }, [todos, filter]);
 
   useEffect(() => {
     const initialTodos = JSON.parse(localStorage.getItem("todos")) || [];
