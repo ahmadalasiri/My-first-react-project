@@ -66,9 +66,14 @@ export default function TodoList() {
           borderRadius: 2,
           boxShadow: 3,
           overflow: "visible",
+          display: "flex",
+          flexDirection: "column",
+          maxHeight: "80vh",
         }}
       >
-        <CardContent sx={{ p: 3 }}>
+        <CardContent
+          sx={{ p: 3, display: "flex", flexDirection: "column", flexGrow: 1 }}
+        >
           <Typography
             variant="h5"
             gutterBottom
@@ -120,11 +125,49 @@ export default function TodoList() {
           </Box>
 
           {/* Todo list */}
-          <Box sx={{ mb: 3 }}>
+          <Box
+            sx={{
+              mb: 3,
+              maxHeight: "300px",
+              minHeight: "200px",
+              overflowY: "auto",
+              scrollbarWidth: "thin",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "rgba(0,0,0,0.05)",
+                borderRadius: "10px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "rgba(0,0,0,0.2)",
+                borderRadius: "10px",
+                "&:hover": {
+                  background: "rgba(0,0,0,0.3)",
+                },
+              },
+              border: "1px solid rgba(0,0,0,0.1)",
+              borderRadius: 1,
+              p: 1,
+              display: "flex",
+              flexDirection: "column",
+              flexGrow: 1,
+            }}
+          >
             {filteredTodos.length > 0 ? (
               filteredTodos.map((todo) => <Todo key={todo.id} todo={todo} />)
             ) : (
-              <Typography variant="body2" color="text.secondary" sx={{ py: 4 }}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  py: 4,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                }}
+              >
                 No todos to display in this category
               </Typography>
             )}
@@ -153,6 +196,7 @@ export default function TodoList() {
                   onClick={handleAddTodo}
                   variant="contained"
                   color="primary"
+                  disabled={newTodo.trim() === ""}
                   fullWidth
                   sx={{
                     borderRadius: 1,
