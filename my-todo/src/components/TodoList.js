@@ -21,11 +21,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useToast } from "../contexts/toastContext";
 
 // Todo component
 import Todo from "./Todo";
 
 export default function TodoList() {
+  const { setOpen, setMessage, setSeverity } = useToast();
   const { todos, setTodos } = useTodos();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [dialogTodo, setDialogTodo] = useState(null);
@@ -43,6 +45,9 @@ export default function TodoList() {
     setTodos(newTodos);
     localStorage.setItem("todos", JSON.stringify(newTodos));
     setNewTodo("");
+    setMessage("Todo added successfully");
+    setSeverity("success");
+    setOpen(true);
   };
 
   const handleFilterChange = (event, newFilter) => {

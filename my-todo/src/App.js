@@ -4,6 +4,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import TodoList from "./components/TodoList";
 import { TodosProvider } from "./contexts/todosContext";
+import SnackbarProvider from "./components/Snackbar";
+import { ToastProvider } from "./contexts/toastContext";
 // Create a theme
 const theme = createTheme({
   palette: {
@@ -38,20 +40,23 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <TodosProvider>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "100vh",
-            bgcolor: "background.default",
-            p: 2,
-          }}
-        >
-          <TodoList />
-        </Box>
-      </TodosProvider>
+      <ToastProvider>
+        <TodosProvider>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "100vh",
+              bgcolor: "background.default",
+              p: 2,
+            }}
+          >
+            <TodoList />
+            <SnackbarProvider />
+          </Box>
+        </TodosProvider>
+      </ToastProvider>
     </ThemeProvider>
   );
 }
