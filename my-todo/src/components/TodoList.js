@@ -33,13 +33,20 @@ export default function TodoList() {
     setNewTodo("");
   };
 
-  const todosJsx = todos.map((todo) => <Todo key={todo.id} todo={todo} />);
-
   const handleFilterChange = (event, newFilter) => {
     if (newFilter !== null) {
       setFilter(newFilter);
     }
   };
+
+  // Filter todos based on current filter
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "ALL") return true;
+    if (filter === "ACTIVE") return !todo.completed;
+    if (filter === "COMPLETED") return todo.completed;
+    return true;
+  });
+
   useEffect(() => {
     const initialTodos = JSON.parse(localStorage.getItem("todos")) || [];
     setTodos(initialTodos);
@@ -79,8 +86,8 @@ export default function TodoList() {
             <ToggleButtonGroup
               value={filter}
               exclusive
-              onChange={handleFilterChange}
               aria-label="todo filter"
+              onChange={handleFilterChange}
               size="small"
               sx={{
                 width: "70%",
@@ -113,7 +120,15 @@ export default function TodoList() {
           </Box>
 
           {/* Todo list */}
-          <Box sx={{ mb: 3 }}>{todosJsx}</Box>
+          <Box sx={{ mb: 3 }}>
+            {filteredTodos.length > 0 ? (
+              filteredTodos.map((todo) => <Todo key={todo.id} todo={todo} />)
+            ) : (
+              <Typography variant="body2" color="text.secondary" sx={{ py: 4 }}>
+                No todos to display in this category
+              </Typography>
+            )}
+          </Box>
 
           {/* Add todo form */}
           <Box sx={{ mt: 3, px: 1 }}>
