@@ -6,11 +6,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { useTodos } from "../contexts/todosContext";
+import { useTodosDispatch } from "../contexts/todosContext";
 import { useToast } from "../contexts/toastContext";
 
 export default function Todo({ todo, showDeleteDialog, handleOpenEditDialog }) {
-  const { dispatch } = useTodos();
+  const dispatch = useTodosDispatch();
   const { setOpen, setMessage, setSeverity } = useToast();
 
   const handleTodoComplete = () => {

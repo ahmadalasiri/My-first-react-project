@@ -20,7 +20,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useToast } from "../contexts/toastContext";
-import { useTodos } from "../contexts/todosContext";
+import { useTodos, useTodosDispatch } from "../contexts/todosContext";
 import Todo from "./Todo";
 
 export default function TodoList() {
@@ -32,7 +32,8 @@ export default function TodoList() {
   const [editDetails, setEditDetails] = useState("");
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [newTodo, setNewTodo] = useState("");
-  const { todos, dispatch } = useTodos();
+  const todos = useTodos();
+  const dispatch = useTodosDispatch();
 
   const handleAddTodo = () => {
     dispatch({ type: "ADD_TODO", payload: newTodo });
