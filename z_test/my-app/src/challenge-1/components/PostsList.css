@@ -1,0 +1,11 @@
+.posts-container {
+    flex: 3;
+    padding-right: 20px;
+}
+
+@media (max-width: 768px) {
+    .posts-container {
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+}

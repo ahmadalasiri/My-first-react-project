@@ -1,0 +1,9 @@
+.tag-button {
+    background-color: #9c27b0;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
