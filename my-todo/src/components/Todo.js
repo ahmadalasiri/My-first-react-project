@@ -5,24 +5,35 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import Button from "@mui/material/Button";
-import { useTodos } from "../contexts/todosContext";
 import Divider from "@mui/material/Divider";
+import { useReducer } from "react";
+import todosReducer from "../reducers/todosReducer";
 import { useToast } from "../contexts/toastContext";
+
 export default function Todo({ todo, showDeleteDialog, handleOpenEditDialog }) {
-  const { todos, setTodos } = useTodos();
   const { setOpen, setMessage, setSeverity } = useToast();
-  function handleTodoComplete() {
-    const newTodos = todos.map((t) =>
-      t.id === todo.id ? { ...t, completed: !t.completed } : t
-    );
-    setTodos(newTodos);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
+  const [todos, dispatch] = useReducer(
+    todosReducer,
+    JSON.parse(localStorage.getItem("todos")) || []
+  );
+
+  const handleTodoComplete = () => {
+    const newTodos = todos.map((t) => {
+      if (t.id === todo.id) {
+        return { ...t, completed: !t.completed };
+      }
+      return t;
+    });
+    dispatch({
+      type: "UPDATE_TODO",
+      payload: { ...newTodos.filter((t) => t.id === todo.id) },
+    });
     if (!todo.completed) {
       setMessage("Todo completed successfully");
       setSeverity("success");
       setOpen(true);
     }
-  }
+  };
 
   return (
     <Box sx={{ mb: 2 }}>

@@ -5,8 +5,7 @@ const ToastContext = createContext();
 
 // Custom hook to use the toast context
 export const useToast = () => {
-  const context = useContext(ToastContext);
-  return context;
+  return useContext(ToastContext);
 };
 
 // Provider component

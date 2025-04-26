@@ -11,9 +11,7 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import { useTodos } from "../contexts/todosContext";
 import Button from "@mui/material/Button";
-import { v4 as uuidv4 } from "uuid";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -22,13 +20,14 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useToast } from "../contexts/toastContext";
+import { useReducer } from "react";
+import todosReducer from "../reducers/todosReducer";
 
 // Todo component
 import Todo from "./Todo";
 
 export default function TodoList() {
   const { setOpen, setMessage, setSeverity } = useToast();
-  const { todos, setTodos } = useTodos();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [dialogTodo, setDialogTodo] = useState(null);
   const [filter, setFilter] = useState("ALL");
@@ -36,18 +35,60 @@ export default function TodoList() {
   const [editDetails, setEditDetails] = useState("");
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [newTodo, setNewTodo] = useState("");
+  const [todos, dispatch] = useReducer(
+    todosReducer,
+    JSON.parse(localStorage.getItem("todos")) || []
+  );
+
+  useEffect(() => {
+    dispatch({ type: "GET_TODOS" });
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const handleAddTodo = () => {
-    const newTodos = [
-      ...todos,
-      { id: uuidv4(), title: newTodo, description: "", completed: false },
-    ];
-    setTodos(newTodos);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
+    dispatch({ type: "ADD_TODO", payload: newTodo });
     setNewTodo("");
     setMessage("Todo added successfully");
     setSeverity("success");
     setOpen(true);
+  };
+
+  const handleSaveEdit = () => {
+    dispatch({
+      type: "UPDATE_TODO",
+      payload: {
+        id: dialogTodo.id,
+        title: editTitle,
+        description: editDetails,
+      },
+    });
+    setOpenEditDialog(false);
+    setMessage("Todo updated successfully");
+    setSeverity("success");
+    setOpen(true);
+  };
+
+  const handleDeleteTodo = () => {
+    dispatch({ type: "DELETE_TODO", payload: dialogTodo.id });
+    setOpenDeleteDialog(false);
+    setMessage("Todo deleted successfully");
+    setSeverity("success");
+    setOpen(true);
+  };
+
+  const handleOpenEditDialog = (todo) => {
+    setEditTitle(todo.title || "");
+    setEditDetails(todo.description || "");
+    setDialogTodo(todo);
+    setOpenEditDialog(true);
+  };
+
+  const showDeleteDialog = (todo) => {
+    setOpenDeleteDialog(true);
+    setDialogTodo(todo);
   };
 
   const handleFilterChange = (event, newFilter) => {
@@ -65,40 +106,6 @@ export default function TodoList() {
       return true;
     });
   }, [todos, filter]);
-
-  useEffect(() => {
-    const initialTodos = JSON.parse(localStorage.getItem("todos")) || [];
-    setTodos(initialTodos);
-  }, []);
-
-  const showDeleteDialog = (todo) => {
-    setOpenDeleteDialog(true);
-    setDialogTodo(todo);
-  };
-  function handleSaveEdit() {
-    const newTodos = todos.map((t) =>
-      t.id === dialogTodo.id
-        ? {
-            ...t,
-            title: editTitle,
-            description: editDetails,
-          }
-        : t
-    );
-    setTodos(newTodos);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
-    setOpenEditDialog(false);
-    setMessage("Todo updated successfully");
-    setSeverity("success");
-    setOpen(true);
-  }
-
-  function handleOpenEditDialog(todo) {
-    setEditTitle(todo.title || "");
-    setEditDetails(todo.description || "");
-    setDialogTodo(todo);
-    setOpenEditDialog(true);
-  }
 
   return (
     <>
@@ -143,15 +150,7 @@ export default function TodoList() {
           <Button
             variant="contained"
             color="error"
-            onClick={() => {
-              const newTodos = todos.filter((t) => t.id !== dialogTodo.id);
-              setTodos(newTodos);
-              localStorage.setItem("todos", JSON.stringify(newTodos));
-              setOpenDeleteDialog(false);
-              setMessage("Todo deleted successfully");
-              setSeverity("error");
-              setOpen(true);
-            }}
+            onClick={handleDeleteTodo}
             sx={{ fontWeight: "bold", borderRadius: 1 }}
           >
             Delete
