@@ -20,10 +20,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useToast } from "../contexts/toastContext";
-import { useReducer } from "react";
-import todosReducer from "../reducers/todosReducer";
-
-// Todo component
+import { useTodos } from "../contexts/todosContext";
 import Todo from "./Todo";
 
 export default function TodoList() {
@@ -35,18 +32,7 @@ export default function TodoList() {
   const [editDetails, setEditDetails] = useState("");
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [newTodo, setNewTodo] = useState("");
-  const [todos, dispatch] = useReducer(
-    todosReducer,
-    JSON.parse(localStorage.getItem("todos")) || []
-  );
-
-  useEffect(() => {
-    dispatch({ type: "GET_TODOS" });
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
+  const { todos, dispatch } = useTodos();
 
   const handleAddTodo = () => {
     dispatch({ type: "ADD_TODO", payload: newTodo });

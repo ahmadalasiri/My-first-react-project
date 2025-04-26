@@ -24,6 +24,13 @@ export default function todosReducer(state, action) {
     case "GET_TODOS": {
       return JSON.parse(localStorage.getItem("todos"));
     }
+    case "COMPLETE_TODO": {
+      return state.map((todo) =>
+        todo.id === action.payload
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      );
+    }
     default:
       throw new Error("Invalid action");
   }
